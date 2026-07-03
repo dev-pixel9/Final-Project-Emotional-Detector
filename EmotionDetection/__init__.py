@@ -1,5 +1,5 @@
 """
-EmotionDetection package for emotion analysis using Watson NLP
+EmotionDetection package initializer
 """
 
 from .emotion_detection import emotion_detector
