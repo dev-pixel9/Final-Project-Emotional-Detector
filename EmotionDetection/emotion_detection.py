@@ -17,6 +17,9 @@ def emotion_detector(text_to_analyze):
     anger, disgust, fear, joy, and sadness. It also identifies the dominant emotion
     (the one with the highest score).
     
+    Error Handling: For status_code = 400 (blank/invalid input), the function returns
+    the same dictionary, but with values for all keys being None.
+    
     Args:
         text_to_analyze (str): The text to analyze for emotions
         
@@ -43,7 +46,8 @@ def emotion_detector(text_to_analyze):
         }
     """
     
-    # Validate input - check for None, empty string, or whitespace-only input
+    # Error Handling: Validate input - check for None, empty string, or whitespace-only input
+    # For status_code = 400 (blank entries), return dictionary with all values as None
     if not text_to_analyze or text_to_analyze.strip() == "":
         return {
             'anger': None,
@@ -73,12 +77,12 @@ def emotion_detector(text_to_analyze):
             }
         ).get_result()
         
-        # Step 1: Convert response text into a dictionary using json library functions
+        # Convert response text into a dictionary using json library functions
         # The response is already in dictionary format from Watson NLP
         # Extract the emotion scores from the response
         emotion_scores = response['emotion']['document']['emotion']
         
-        # Step 2: Extract the required set of emotions with their scores
+        # Extract the required set of emotions with their scores
         # The emotion_scores dictionary contains: anger, disgust, fear, joy, sadness
         anger_score = emotion_scores.get('anger')
         disgust_score = emotion_scores.get('disgust')
@@ -86,12 +90,11 @@ def emotion_detector(text_to_analyze):
         joy_score = emotion_scores.get('joy')
         sadness_score = emotion_scores.get('sadness')
         
-        # Step 3: Write code logic to find the dominant emotion
+        # Write code logic to find the dominant emotion
         # The dominant emotion is the one with the highest score
         dominant_emotion = max(emotion_scores, key=emotion_scores.get)
         
-        # Step 4: Return the formatted output
-        # Format the output dictionary with all emotions and the dominant emotion
+        # Return the formatted output with all emotions and dominant emotion
         return {
             'anger': anger_score,
             'disgust': disgust_score,
@@ -102,7 +105,8 @@ def emotion_detector(text_to_analyze):
         }
     
     except Exception as exception:
-        # Return error response for any API failures
+        # Error Handling: Return error response with status_code 400 for any API failures
+        # All emotion values are set to None
         return {
             'anger': None,
             'disgust': None,
