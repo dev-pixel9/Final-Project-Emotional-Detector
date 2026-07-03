@@ -1,0 +1,9 @@
+    # 2. Check for blank/empty input
+    if not text_to_analyze or text_to_analyze.strip() == '':
+        error_msg = "Invalid text! Please try again!"
+        if is_json_request:
+            return jsonify({
+                'error': error_msg,
+                'status_code': 400
+            }), 400
+        return error_msg, 400

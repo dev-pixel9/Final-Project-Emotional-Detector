@@ -1,0 +1,7 @@
+test_emotion_detection.py::TestEmotionDetection::test_emotion_detector_anger PASSED [ 20%]
+test_emotion_detection.py::TestEmotionDetection::test_emotion_detector_disgust PASSED [ 40%]
+test_emotion_detection.py::TestEmotionDetection::test_emotion_detector_fear PASSED [ 60%]
+test_emotion_detection.py::TestEmotionDetection::test_emotion_detector_joy PASSED [ 80%]
+test_emotion_detection.py::TestEmotionDetection::test_emotion_detector_sadness PASSED [100%]
+
+============================= 5 passed in 50.42s ==============================
