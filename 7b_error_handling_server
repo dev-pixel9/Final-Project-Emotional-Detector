@@ -1,3 +1,25 @@
+@app.route('/emotionDetector', methods=['GET', 'POST'])
+@app.route('/emotion_detector', methods=['GET', 'POST'])
+def sent_detector():
+    """
+    Route handler to detect emotions from input text.
+    Handles GET query parameters and POST JSON requests.
+    """
+    # 1. Retrieve the text to analyze
+    text_to_analyze = ""
+    is_json_request = False
+
+    if request.method == 'POST':
+        if request.is_json:
+            request_body = request.get_json()
+            if request_body:
+                text_to_analyze = request_body.get('textToAnalyze', '')
+                is_json_request = True
+        else:
+            text_to_analyze = request.form.get('textToAnalyze', '')
+    else:
+        text_to_analyze = request.args.get('textToAnalyze', '')
+
     # 2. Check for blank/empty input
     if not text_to_analyze or text_to_analyze.strip() == '':
         error_msg = "Invalid text! Please try again!"
@@ -7,3 +29,44 @@
                 'status_code': 400
             }), 400
         return error_msg, 400
+
+    # 3. Call the emotion detector
+    emotion_result = emotion_detector(text_to_analyze)
+
+    # 4. Check for errors
+    if emotion_result.get('status_code') == 400 or emotion_result.get('dominant_emotion') is None:
+        error_msg = "Invalid text! Please try again!"
+        if is_json_request:
+            return jsonify({
+                'error': error_msg,
+                'status_code': 400
+            }), 400
+        return error_msg, 400
+
+    # 5. Extract scores
+    anger_score = emotion_result.get('anger')
+    disgust_score = emotion_result.get('disgust')
+    fear_score = emotion_result.get('fear')
+    joy_score = emotion_result.get('joy')
+    sadness_score = emotion_result.get('sadness')
+    dominant_emotion = emotion_result.get('dominant_emotion')
+
+    # 6. Format the string output
+    formatted_response = (
+        f"For the given statement, the system response is 'anger': {anger_score}, "
+        f"'disgust': {disgust_score}, 'fear': {fear_score}, 'joy': {joy_score} and "
+        f"'sadness': {sadness_score}. The dominant emotion is {dominant_emotion}."
+    )
+
+    if is_json_request:
+        return jsonify({
+            'anger': anger_score,
+            'disgust': disgust_score,
+            'fear': fear_score,
+            'joy': joy_score,
+            'sadness': sadness_score,
+            'dominant_emotion': dominant_emotion,
+            'response': formatted_response
+        }), 200
+
+    return formatted_response, 200

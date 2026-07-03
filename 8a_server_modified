@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def index():
+def render_index_page():
     """
     Route: / (GET)
     Serves the home page with the emotion detection interface.
@@ -20,7 +20,7 @@ def index():
 
 @app.route('/emotionDetector', methods=['GET', 'POST'])
 @app.route('/emotion_detector', methods=['GET', 'POST'])
-def emotion_detector_route():
+def sent_detector():
     """
     Route handler to detect emotions from input text.
     Handles GET query parameters and POST JSON requests.

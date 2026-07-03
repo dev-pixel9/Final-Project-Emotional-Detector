@@ -72,6 +72,11 @@
                 <h3>Dominant Emotion:</h3>
                 <p id="dominantEmotionText" class="emotion-text"></p>
             </div>
+
+            <div style="margin-top: 24px; padding: 16px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">System Response:</h4>
+                <p id="systemResponseText" style="margin: 0; font-family: 'Courier New', Courier, monospace; font-weight: bold; color: #212529; font-size: 14px; line-height: 1.5;"></p>
+            </div>
         </div>
     </div>
     
@@ -145,6 +150,12 @@
             document.getElementById('dominantEmotionText').textContent = dominantText;
             document.getElementById('dominantEmotionText').className = 
                 'emotion-text ' + data.dominant_emotion;
+
+            // Update system response text sentence
+            document.getElementById('systemResponseText').textContent = data.response || 
+                `For the given statement, the system response is 'anger': ${data.anger}, ` +
+                `'disgust': ${data.disgust}, 'fear': ${data.fear}, 'joy': ${data.joy} ` +
+                `and 'sadness': ${data.sadness}. The dominant emotion is ${data.dominant_emotion}.`;
         }
         
         function clearForm() {
